@@ -14,7 +14,7 @@ public class CameraScript : MonoBehaviour
     public Transform orientation;
 
     public float gunRange = 100f;
-    bool isShooting;
+    public bool isShooting;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -53,7 +53,7 @@ public class CameraScript : MonoBehaviour
 
     public void PullTrigger()
     {
-        if (playerControllerScript.shootCooldown < 0)
+        if (playerControllerScript.shootCooldown < 0 && !playerControllerScript.isReloading && playerControllerScript.clip > 0)
         {
             Ray ray = new Ray(transform.position, transform.forward * gunRange);
             RaycastHit hitData;
@@ -73,10 +73,6 @@ public class CameraScript : MonoBehaviour
 
             playerControllerScript.ShootGun(target);
             playerControllerScript.shootCooldown = playerControllerScript.shootCooldownTime;
-        }
-        else
-        {
-            Debug.Log("Reloading..");
         }
     }
     public void OnShoot(InputAction.CallbackContext context)

@@ -1,5 +1,8 @@
+using System.Collections;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -33,20 +36,33 @@ public class PlayerControllerScript : MonoBehaviour
     bool grounded = false;
 
     [Header("References")]
-    public float shootCooldownTime;
-    public float shootCooldown = 0;
+
     private Rigidbody _rbody;
     private CapsuleCollider _collider;
     private Vector2 moveInput;
     Vector3 moveDirection;
     public Transform orientation;
     public GameObject cam;
+    CameraScript camScript;
     AudioSource audioSource;
+
     public AudioClip gunshot;
     Animator animator;
     public ParticleSystem muzzleFlash;
     public ParticleSystem muzzleSmoke;
     public GameObject bulletTrailPrefab;
+    public TMP_Text clipText;
+    public TMP_Text ammoStockText;
+
+    public float shootCooldownTime;
+    public float shootCooldown = 0;
+    public int clipSize;
+    public int clip;
+    public int ammoStock;
+    public float reloadTime;
+    public bool isReloading;
+
+
     public enum MovementState
     {
         running,
@@ -59,6 +75,7 @@ public class PlayerControllerScript : MonoBehaviour
         _collider = GetComponent<CapsuleCollider>();
         _rbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        camScript = cam.GetComponent<CameraScript>();
     }
 
     private void Update()
@@ -118,6 +135,15 @@ public class PlayerControllerScript : MonoBehaviour
         }
     }
 
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        if (context.performed && !camScript.isShooting && !isReloading)
+        {
+            StartCoroutine(ReloadCoroutine(reloadTime));
+        }
+    }
+
+
     private void HandleCooldowns()
     {
         shootCooldown -= Time.deltaTime; // Not Yet Implemented
@@ -128,34 +154,31 @@ public class PlayerControllerScript : MonoBehaviour
     //Activates every fixed update
     private void HandleMovement()
     {
-        // PRIORITY 1: Slope Movement - Special physics handling
+        // Apply forces first
         if (OnSlopeCheck())
         {
             _rbody.AddForce(10f * runSpeed * GetSlopeDirection(), ForceMode.Force);
             _rbody.AddForce(slopeCling * -slopeCast.normal, ForceMode.Force);
             _rbody.useGravity = false;
-            return;
         }
-
-        // Movement force application based on current state
-        Vector3 movementForce = 10f * moveDirection.normalized;
-        switch (movementState)
+        else
         {
-            case MovementState.running:
-                _rbody.AddForce(movementForce * runSpeed, ForceMode.Force);
-                
-                break;
-
-            case MovementState.freefall:
-                HandleFreefallMovement(movementForce);
-                break;
+            // Movement force application based on current state
+            Vector3 movementForce = 10f * moveDirection.normalized;
+            switch (movementState)
+            {
+                case MovementState.running:
+                    _rbody.AddForce(movementForce * runSpeed, ForceMode.Force);
+                    break;
+                case MovementState.freefall:
+                    HandleFreefallMovement(movementForce);
+                    break;
+            }
+            _rbody.useGravity = true;
         }
 
-        // Speed control
+        // Always control speed regardless of slope or ground
         ControlMovementSpeed();
-
-        // Restore gravity when not on slope
-        _rbody.useGravity = true;
     }
 
 
@@ -276,6 +299,49 @@ public class PlayerControllerScript : MonoBehaviour
         GameObject bTrail = Instantiate(bulletTrailPrefab, muzzleFlash.transform.position, Quaternion.identity);
         bTrail.GetComponent<BulletTrailScript>().StartTrail(bTrail.transform.position, target);
         shootCooldown = shootCooldownTime;
+        ChangeClipAmmo(-1);
+        Debug.Log("Clip: " + clip);
+        if (clip <= 0)
+        {
+            StartCoroutine(ReloadCoroutine(reloadTime));
+        }
+    }
 
+    public void ChangeAmmoStock(int deltaAmmo)
+    {
+        ammoStock += deltaAmmo;
+        ammoStockText.SetText("" + ammoStock);
+    }
+
+    public void ChangeClipAmmo(int deltaAmmo)
+    {
+        clip += deltaAmmo;
+        clipText.SetText("" + clip);
+    }
+
+    IEnumerator ReloadCoroutine(float duration)
+    {
+        if (clip < clipSize)
+        {
+            isReloading = true;
+            if (ammoStock == 0)
+            {
+                Debug.Log("Out of Ammo");
+            }
+            else
+            {
+                yield return new WaitForSeconds(duration / 2);
+                Debug.Log("Play Reload sound");
+                yield return new WaitForSeconds(duration / 2);
+                int amountToLoad = Mathf.Min(clipSize - clip, ammoStock);
+                ChangeClipAmmo(amountToLoad);
+                ChangeAmmoStock(-amountToLoad);
+                Debug.Log("Loaded " + amountToLoad + " rounds.");
+                Debug.Log("Clip: " + clip);
+                Debug.Log("Ammo Supply: " + ammoStock);
+
+            }
+            isReloading = false;
+        }
     }
 }
