@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MonsterLogicScript : MonoBehaviour
@@ -32,12 +33,11 @@ public class MonsterLogicScript : MonoBehaviour
     {
         GameObject hitPart = Instantiate(hitParticles, hitlocation, transform.rotation).gameObject;
         Destroy(hitPart, 1f);
-        billboard.GetComponent<SpriteRenderer>().color = new Color(1f, health / maxHealth, health / maxHealth);
-        
+        billboard.GetComponent<SpriteRenderer>().color = new Color(1, health/maxHealth, health/maxHealth);
         if (health <= 0)
         {
             Debug.Log("Dead");
-            billboard.GetComponent<SpriteRenderer>().color = new Color(1f, 0.7f, 0.7f);
+            billboard.GetComponent<SpriteRenderer>().color = new Color(1, 0.8f, 0.8f);
         }
         {
             health -= damage;
