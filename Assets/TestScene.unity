@@ -1148,6 +1148,10 @@ PrefabInstance:
       propertyPath: bulletTrailPrefab
       value: 
       objectReference: {fileID: 3193775022546396649, guid: b8e8ff1ef3aedae47aa9149affd814bc, type: 3}
+    - target: {fileID: 2327739628341127771, guid: 249ae76c61232f04aa2caa7d2854397f, type: 3}
+      propertyPath: shootCooldownTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3140368299428776644, guid: 249ae76c61232f04aa2caa7d2854397f, type: 3}
       propertyPath: m_ActionEvents.Array.size
       value: 5

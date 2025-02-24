@@ -14,6 +14,7 @@ public class CameraScript : MonoBehaviour
     public Transform orientation;
 
     public float gunRange = 100f;
+    bool isShooting;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -35,6 +36,14 @@ public class CameraScript : MonoBehaviour
 
 
     }
+
+    private void FixedUpdate()
+    {
+        if (isShooting)
+        {
+            PullTrigger();
+        }
+    }
     public void OnLook(InputAction.CallbackContext context)
     {
         mouseX = context.ReadValue<Vector2>().x;
@@ -42,9 +51,9 @@ public class CameraScript : MonoBehaviour
 
     }
 
-    public void OnShoot(InputAction.CallbackContext context)
+    public void PullTrigger()
     {
-        if (context.performed)
+        if (playerControllerScript.shootCooldown < 0)
         {
             Ray ray = new Ray(transform.position, transform.forward * gunRange);
             RaycastHit hitData;
@@ -61,8 +70,23 @@ public class CameraScript : MonoBehaviour
                     hitData.collider.gameObject.GetComponent<MonsterLogicScript>().InflictHit(1, target);
                 }
             }
-            
+
             playerControllerScript.ShootGun(target);
+            playerControllerScript.shootCooldown = playerControllerScript.shootCooldownTime;
+        }
+        else
+        {
+            Debug.Log("Reloading..");
+        }
+    }
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            isShooting = true;
+        } else if (context.canceled)
+        {
+            isShooting = false;
         }
     }
 

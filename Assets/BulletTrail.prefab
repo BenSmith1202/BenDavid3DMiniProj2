@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3193775022546396649}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.008901071, z: 0, w: 0.99996036}
-  m_LocalPosition: {x: 0.81, y: 1.82, z: 1.59}
+  m_LocalPosition: {x: 4.0829163, y: 10.196663, z: 1.5317281}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -75,7 +75,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.3
+  m_Time: 0.5
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -108,8 +108,8 @@ TrailRenderer:
       serializedVersion: 2
       key0: {r: 1, g: 0.9982686, b: 0.9264151, a: 1}
       key1: {r: 1, g: 0.9749821, b: 0, a: 1}
-      key2: {r: 1, g: 0.6717892, b: 0.11372548, a: 0.72156864}
-      key3: {r: 1, g: 0.11702128, b: 0, a: 0.026483834}
+      key2: {r: 1, g: 0.6717892, b: 0.11372548, a: 1}
+      key3: {r: 1, g: 0.11702128, b: 0, a: 1}
       key4: {r: 0.78113204, g: 0.09189789, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
@@ -125,7 +125,7 @@ TrailRenderer:
       atime0: 0
       atime1: 11005
       atime2: 43375
-      atime3: 64091
+      atime3: 55326
       atime4: 65535
       atime5: 0
       atime6: 0

@@ -266,13 +266,16 @@ public class PlayerControllerScript : MonoBehaviour
 
     public void ShootGun(Vector3 target)
     {
+
         muzzleFlash.Play();
         muzzleSmoke.Play();
         audioSource.PlayOneShot(gunshot);
-        Vector3 bulletVector = target-muzzleFlash.transform.position;
+        Vector3 bulletVector = target - muzzleFlash.transform.position;
         bulletVector = RemovePositiveParallelComponent(bulletVector, -transform.forward);
         target = muzzleFlash.transform.position + bulletVector;
         GameObject bTrail = Instantiate(bulletTrailPrefab, muzzleFlash.transform.position, Quaternion.identity);
         bTrail.GetComponent<BulletTrailScript>().StartTrail(bTrail.transform.position, target);
+        shootCooldown = shootCooldownTime;
+
     }
 }
