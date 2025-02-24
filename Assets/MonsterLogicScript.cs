@@ -32,11 +32,12 @@ public class MonsterLogicScript : MonoBehaviour
     {
         GameObject hitPart = Instantiate(hitParticles, hitlocation, transform.rotation).gameObject;
         Destroy(hitPart, 1f);
+        billboard.GetComponent<SpriteRenderer>().color = new Color(1f, health / maxHealth, health / maxHealth);
         
         if (health <= 0)
         {
             Debug.Log("Dead");
-
+            billboard.GetComponent<SpriteRenderer>().color = new Color(1f, 0.7f, 0.7f);
         }
         {
             health -= damage;
