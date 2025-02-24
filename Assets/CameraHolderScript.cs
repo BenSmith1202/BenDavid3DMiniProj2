@@ -19,6 +19,7 @@ public class CameraHolderScript : MonoBehaviour
     void LateUpdate()
     {
         // lerp to smooth out jerkiness
+
         transform.position = Vector3.Lerp(transform.position, targetPos.position, lockingForce * Time.deltaTime);
     }
 }

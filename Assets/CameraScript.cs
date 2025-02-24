@@ -12,6 +12,8 @@ public class CameraScript : MonoBehaviour
     float yAngle;
     float xAngle;
     public Transform orientation;
+
+    public float gunRange = 100f;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -38,9 +40,30 @@ public class CameraScript : MonoBehaviour
         mouseX = context.ReadValue<Vector2>().x;
         mouseY = context.ReadValue<Vector2>().y;
 
-        print(mouseX);
-        print(mouseY);
+    }
 
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Ray ray = new Ray(transform.position, transform.forward * gunRange);
+            RaycastHit hitData;
+            Physics.Raycast(ray, out hitData);
+            Vector3 target = hitData.point;
+            if (target == Vector3.zero)
+            {
+                target = transform.forward * gunRange;
+            }
+            else
+            {
+                if (hitData.collider.gameObject.GetComponent<MonsterLogicScript>() != null)
+                {
+                    hitData.collider.gameObject.GetComponent<MonsterLogicScript>().InflictHit(1, target);
+                }
+            }
+            
+            playerControllerScript.ShootGun(target);
+        }
     }
 
 

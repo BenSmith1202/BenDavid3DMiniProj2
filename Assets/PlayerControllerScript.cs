@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,24 +6,21 @@ using UnityEngine.InputSystem;
 public class PlayerControllerScript : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float runSpeed;
+    public float baseSpeed;
+    float runSpeed = 5f;
+    public float sprintSpeed;
     public float groundDrag;
     public float airDrag;
     public float airMultiplier;
     public float airSpeedCap;
-    float speed = 5f;
+
     public MovementState movementState;
+    public bool sprinting;
 
     [Header("Jumping")]
     public float jumpForce;
     public float jumpDelay;
     bool readyToJump = true;
-
-    [Header("Crouching")]
-    public float crouchSpeed;
-    public float startYScale;
-    public float crouchYScale;
-    public float crouchForce;
 
     [Header("Slope Movement")]
     public float maxSlopeAngle;
@@ -40,25 +38,26 @@ public class PlayerControllerScript : MonoBehaviour
     private Rigidbody _rbody;
     private CapsuleCollider _collider;
     private Vector2 moveInput;
-    private bool isCrouching;
     Vector3 moveDirection;
     public Transform orientation;
     public GameObject cam;
     AudioSource audioSource;
-
+    public AudioClip gunshot;
+    Animator animator;
+    public ParticleSystem muzzleFlash;
+    public ParticleSystem muzzleSmoke;
+    public GameObject bulletTrailPrefab;
     public enum MovementState
     {
         running,
-        sprinting,
-        crouching,
         freefall,
     }
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         _collider = GetComponent<CapsuleCollider>();
         _rbody = GetComponent<Rigidbody>();
-        startYScale = transform.localScale.y;
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -90,6 +89,23 @@ public class PlayerControllerScript : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        animator.SetFloat("speed", moveInput.magnitude);
+    }
+
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            sprinting = true;
+            animator.SetBool("sprinting", true);
+            runSpeed = sprintSpeed;
+        }
+        else if (context.canceled)
+        {
+            sprinting = false;
+            animator.SetBool("sprinting", false);
+            runSpeed = baseSpeed;
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -99,18 +115,6 @@ public class PlayerControllerScript : MonoBehaviour
             PlayerJump();
             readyToJump = false;
             Invoke(nameof(ResetJump), jumpDelay);
-        }
-    }
-
-    public void OnCrouch(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            isCrouching = true;
-        }
-        else if (context.canceled)
-        {
-            isCrouching = false;
         }
     }
 
@@ -127,7 +131,7 @@ public class PlayerControllerScript : MonoBehaviour
         // PRIORITY 1: Slope Movement - Special physics handling
         if (OnSlopeCheck())
         {
-            _rbody.AddForce(10f * speed * GetSlopeDirection(), ForceMode.Force);
+            _rbody.AddForce(10f * runSpeed * GetSlopeDirection(), ForceMode.Force);
             _rbody.AddForce(slopeCling * -slopeCast.normal, ForceMode.Force);
             _rbody.useGravity = false;
             return;
@@ -137,12 +141,9 @@ public class PlayerControllerScript : MonoBehaviour
         Vector3 movementForce = 10f * moveDirection.normalized;
         switch (movementState)
         {
-            case MovementState.crouching:
-                _rbody.AddForce(movementForce * crouchSpeed, ForceMode.Force);
-                break;
-
             case MovementState.running:
-                _rbody.AddForce(movementForce * speed, ForceMode.Force);
+                _rbody.AddForce(movementForce * runSpeed, ForceMode.Force);
+                
                 break;
 
             case MovementState.freefall:
@@ -163,13 +164,13 @@ public class PlayerControllerScript : MonoBehaviour
     {
         Vector3 xzVel = new(_rbody.velocity.x, 0f, _rbody.velocity.z);
 
-        if (xzVel.magnitude > speed)
+        if (xzVel.magnitude > runSpeed)
         {
-            _rbody.AddForce(RemovePositiveParallelComponent(0.8f * airMultiplier * speed * movementForce, xzVel), ForceMode.Force);
+            _rbody.AddForce(RemovePositiveParallelComponent(0.8f * airMultiplier * runSpeed * movementForce, xzVel), ForceMode.Force);
         }
         else
         {
-            _rbody.AddForce(0.8f * airMultiplier * speed * movementForce, ForceMode.Force);
+            _rbody.AddForce(0.8f * airMultiplier * runSpeed * movementForce, ForceMode.Force);
         }
 
     }
@@ -180,9 +181,9 @@ public class PlayerControllerScript : MonoBehaviour
 
         Vector3 xzVel = new(_rbody.velocity.x, 0f, _rbody.velocity.z);
 
-        if (xzVel.magnitude > speed && movementState != MovementState.freefall)
+        if (xzVel.magnitude > runSpeed && movementState != MovementState.freefall)
         {
-            Vector3 cappedVel = xzVel.normalized * speed;
+            Vector3 cappedVel = xzVel.normalized * runSpeed;
             _rbody.velocity = new Vector3(cappedVel.x, _rbody.velocity.y, cappedVel.z);
         }
     }
@@ -245,35 +246,33 @@ public class PlayerControllerScript : MonoBehaviour
 
     private void StateHandler()
     {
-        if (isCrouching && grounded)
+        if (grounded)
         {
-            transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-            if (movementState != MovementState.crouching)
+            if (movementState != MovementState.running)
             {
-                _rbody.AddForce(new Vector3(0, -crouchForce, 0), ForceMode.Impulse);
+                movementState = MovementState.running;
+                
             }
-            movementState = MovementState.crouching;
-            speed = crouchSpeed;
         }
         else
         {
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-
-            if (grounded)
+            if (movementState != MovementState.freefall)
             {
-                if (movementState != MovementState.running)
-                {
-                    movementState = MovementState.running;
-                    speed = runSpeed;
-                }
-            }
-            else
-            {
-                if (movementState != MovementState.freefall)
-                {
-                    movementState = MovementState.freefall;
-                }
+                movementState = MovementState.freefall;
             }
         }
+        
+    }
+
+    public void ShootGun(Vector3 target)
+    {
+        muzzleFlash.Play();
+        muzzleSmoke.Play();
+        audioSource.PlayOneShot(gunshot);
+        Vector3 bulletVector = target-muzzleFlash.transform.position;
+        bulletVector = RemovePositiveParallelComponent(bulletVector, -transform.forward);
+        target = muzzleFlash.transform.position + bulletVector;
+        GameObject bTrail = Instantiate(bulletTrailPrefab, muzzleFlash.transform.position, Quaternion.identity);
+        bTrail.GetComponent<BulletTrailScript>().StartTrail(bTrail.transform.position, target);
     }
 }
