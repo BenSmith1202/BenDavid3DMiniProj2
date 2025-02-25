@@ -10,6 +10,7 @@ public class ZombieScript : MonoBehaviour
     CapsuleCollider myCollider;
     Rigidbody rb;
     public bool dead;
+    public ParticleSystem deathParts;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +29,8 @@ public class ZombieScript : MonoBehaviour
             animator.SetBool("dead", true);
             myCollider.enabled = false;
             rb.useGravity = false;
+            GameObject deathEffect = Instantiate(deathParts, transform.position, monsterLogicScript.billboard.transform.rotation).gameObject;
+            Destroy(deathEffect, 2);
         }
     }
 

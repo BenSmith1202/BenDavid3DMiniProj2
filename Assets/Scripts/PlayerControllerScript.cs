@@ -89,6 +89,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     void Start()
     {
+        runSpeed = baseSpeed;
         healthBarScript = healthBar.GetComponent<UIBarScript>();
         stamBarScript = staminaBar.GetComponent<UIBarScript>();
         animator = GetComponent<Animator>();
