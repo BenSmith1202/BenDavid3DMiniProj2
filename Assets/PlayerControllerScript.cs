@@ -10,20 +10,31 @@ public class PlayerControllerScript : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float baseSpeed;
-    float runSpeed = 5f;
-    public float sprintSpeed;
+    float runSpeed;
     public float groundDrag;
     public float airDrag;
     public float airMultiplier;
     public float airSpeedCap;
-
     public MovementState movementState;
-    public bool sprinting;
 
     [Header("Jumping")]
     public float jumpForce;
     public float jumpDelay;
     bool readyToJump = true;
+
+    [Header("Sprinting")]
+    public GameObject staminaBar;
+    UIBarScript stamBarScript;
+    public float sprintSpeed;
+    public bool sprinting;
+    public float maxStamina;
+    public float stamina;
+
+    [Header("Health")]
+    public GameObject healthBar;
+    UIBarScript healthBarScript;
+    public float maxHealth;
+    public float health;
 
     [Header("Slope Movement")]
     public float maxSlopeAngle;
@@ -46,6 +57,7 @@ public class PlayerControllerScript : MonoBehaviour
     CameraScript camScript;
     AudioSource audioSource;
 
+    [Header("Visuals")]
     public AudioClip gunshot;
     Animator animator;
     public ParticleSystem muzzleFlash;
@@ -54,6 +66,7 @@ public class PlayerControllerScript : MonoBehaviour
     public TMP_Text clipText;
     public TMP_Text ammoStockText;
 
+    [Header("Shooting")]
     public float shootCooldownTime;
     public float shootCooldown = 0;
     public int clipSize;
@@ -71,6 +84,8 @@ public class PlayerControllerScript : MonoBehaviour
 
     void Start()
     {
+        healthBarScript = healthBar.GetComponent<UIBarScript>();
+        stamBarScript = staminaBar.GetComponent<UIBarScript>();
         animator = GetComponent<Animator>();
         _collider = GetComponent<CapsuleCollider>();
         _rbody = GetComponent<Rigidbody>();
