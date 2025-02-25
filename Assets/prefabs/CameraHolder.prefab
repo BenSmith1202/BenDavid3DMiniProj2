@@ -113,6 +113,7 @@ MonoBehaviour:
   mouseY: 0
   orientation: {fileID: 0}
   gunRange: 100
+  isShooting: 0
 --- !u!114 &1657894937692150105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,5 +234,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPos: {fileID: 0}
-  lockingForce: 15
-  smoothTime: 0.1
+  lockingForce: 18
+  smoothTime: 0.03

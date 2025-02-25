@@ -8,6 +8,10 @@ public class UIBarScript : MonoBehaviour
     // Start is called before the first frame update
     Slider slider;
 
+    private void Start()
+    {
+        slider = GetComponent<Slider>();
+    }
     public void SetSliderValue(float value)
     {
         value = Mathf.Clamp(value, slider.minValue, slider.maxValue);

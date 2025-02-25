@@ -5,6 +5,8 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerControllerScript : MonoBehaviour
 {
@@ -29,6 +31,8 @@ public class PlayerControllerScript : MonoBehaviour
     public bool sprinting;
     public float maxStamina;
     public float stamina;
+    public float sprintCost;
+    public float staminaRegen;
 
     [Header("Health")]
     public GameObject healthBar;
@@ -65,6 +69,7 @@ public class PlayerControllerScript : MonoBehaviour
     public GameObject bulletTrailPrefab;
     public TMP_Text clipText;
     public TMP_Text ammoStockText;
+    public Image reloadRing;
 
     [Header("Shooting")]
     public float shootCooldownTime;
@@ -91,6 +96,8 @@ public class PlayerControllerScript : MonoBehaviour
         _rbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         camScript = cam.GetComponent<CameraScript>();
+        reloadRing.fillAmount = 0;
+
     }
 
     private void Update()
@@ -126,7 +133,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && stamina > 1)
         {
             sprinting = true;
             animator.SetBool("sprinting", true);
@@ -162,6 +169,22 @@ public class PlayerControllerScript : MonoBehaviour
     private void HandleCooldowns()
     {
         shootCooldown -= Time.deltaTime; // Not Yet Implemented
+        
+        if (sprinting && stamina > 0)
+        {
+            stamina -= sprintCost * Time.deltaTime;
+            stamBarScript.SetSliderValue(stamina);
+        } else if (stamina < maxStamina)
+        {
+            stamina += staminaRegen * Time.deltaTime;
+            stamBarScript.SetSliderValue(stamina);
+        }
+        if (stamina < 1)
+        {
+            sprinting = false;
+            animator.SetBool("sprinting", false);
+            runSpeed = baseSpeed;
+        }
 
     }
 
@@ -345,9 +368,14 @@ public class PlayerControllerScript : MonoBehaviour
             }
             else
             {
-                yield return new WaitForSeconds(duration / 2);
-                Debug.Log("Play Reload sound");
-                yield return new WaitForSeconds(duration / 2);
+                float elapsedTime = 0f;
+                while (elapsedTime < duration)
+                {
+                    reloadRing.fillAmount = elapsedTime / duration;
+                    yield return new WaitForEndOfFrame();
+                    elapsedTime += Time.deltaTime;
+                }
+
                 int amountToLoad = Mathf.Min(clipSize - clip, ammoStock);
                 ChangeClipAmmo(amountToLoad);
                 ChangeAmmoStock(-amountToLoad);
@@ -357,6 +385,14 @@ public class PlayerControllerScript : MonoBehaviour
 
             }
             isReloading = false;
+            reloadRing.fillAmount = 0;
         }
+    }
+
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        healthBarScript.SetSliderValue(health);
     }
 }
