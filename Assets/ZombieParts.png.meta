@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 755e27d302d9dda4f938b09de85c8aa8
+guid: 25e55b1df12b33b438d5422b8086723e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Zombie_0
+      name: ZombieParts_0
       rect:
         serializedVersion: 2
         x: 0
@@ -111,14 +111,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d5e5913cd7bcbe41b6442c986397577
-      internalID: 199413324
+      spriteID: 89dd5022ca3e5a54f949e93e4f21d9f6
+      internalID: -1739664213
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Zombie_1
+      name: ZombieParts_1
       rect:
         serializedVersion: 2
         x: 512
@@ -132,14 +132,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7d188ff73193a3d48bbdf187d61307da
-      internalID: -1456604339
+      spriteID: decc75b68580ebc48b3d0ff9b8ff213b
+      internalID: -649664406
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Zombie_2
+      name: ZombieParts_2
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1024
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb954505f30e0ae46b0c2a8fc9ae424d
+      internalID: -1911477570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ZombieParts_3
       rect:
         serializedVersion: 2
         x: 0
@@ -153,14 +174,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c78f372c46738bf438c9a02d36e86222
-      internalID: -932069652
+      spriteID: 34710e501eeb17b479eb47de7e79a4f4
+      internalID: -1345742750
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Zombie_3
+      name: ZombieParts_4
       rect:
         serializedVersion: 2
         x: 512
@@ -174,14 +195,35 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54e57846588138c428af72d30bb990eb
-      internalID: -1364973298
+      spriteID: 618d6cae557d47b40a11cafb57f6c566
+      internalID: -1254743594
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Zombie_4
+      name: ZombieParts_5
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512
+        width: 512
+        height: 512
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ce3bd85609f8ee40a8999da512421a7
+      internalID: -1810950083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ZombieParts_6
       rect:
         serializedVersion: 2
         x: 0
@@ -195,8 +237,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 179db4fb45bd9a241806c5c39bbc1cd3
-      internalID: 68954365
+      spriteID: a97f63ca59a8af444a7e3394f7c39e71
+      internalID: 1366482508
       vertices: []
       indices: 
       edges: []
@@ -204,7 +246,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 3e7801f43ee7f4c429c980e6835bc1e7
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -212,11 +254,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Zombie_0: 199413324
-      Zombie_1: -1456604339
-      Zombie_2: -932069652
-      Zombie_3: -1364973298
-      Zombie_4: 68954365
+      ZombieParts_0: -1739664213
+      ZombieParts_1: -649664406
+      ZombieParts_2: -1911477570
+      ZombieParts_3: -1345742750
+      ZombieParts_4: -1254743594
+      ZombieParts_5: -1810950083
+      ZombieParts_6: 1366482508
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

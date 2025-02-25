@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Trails
+    uniqueID: 2399649569
+    locked: 0
+  - name: Particles
+    uniqueID: 2243392901
+    locked: 0
+  - name: Sprites
+    uniqueID: 2934111987
+    locked: 0
