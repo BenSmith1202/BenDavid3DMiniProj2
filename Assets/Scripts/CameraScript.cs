@@ -69,6 +69,11 @@ public class CameraScript : MonoBehaviour
                 {
                     hitData.collider.gameObject.GetComponent<MonsterLogicScript>().InflictHit(1, target);
                 }
+
+                if (hitData.collider.gameObject.GetComponent<ShieldScript>() != null)
+                {
+                    hitData.collider.gameObject.GetComponent<ShieldScript>().TakeDamage(1, target);
+                }
             }
 
             playerControllerScript.ShootGun(target);
