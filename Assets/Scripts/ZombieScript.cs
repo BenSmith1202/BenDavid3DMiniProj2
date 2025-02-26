@@ -20,11 +20,19 @@ public class ZombieScript : MonoBehaviour
         animator = monsterLogicScript.billboard.GetComponent<Animator>();
     }
 
+
+    public int ZombCode;
+
     // Update is called once per frame
     void Update()
     {
         if (!dead && monsterLogicScript.health < 0)
         {
+
+            GameObject.FindWithTag("WMan").GetComponent<waveManager>().RegisterKill(gameObject, ZombCode);
+
+
+
             dead = true;
             animator.SetBool("dead", true);
             myCollider.enabled = false;

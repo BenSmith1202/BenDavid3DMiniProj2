@@ -145,12 +145,6 @@ public class waveManager : MonoBehaviour
 
     void StartNewRound()
     {
-        currentRound++;
-        currentKillCount = 0;
-        zombiesToKillThisRound += IncreaseKillsAMount;
-        AdjustSpawnChances();
-
-
 
         // Disable all zombies still active
         GameObject[] allZombies = GameObject.FindGameObjectsWithTag("Zombie");
@@ -158,8 +152,18 @@ public class waveManager : MonoBehaviour
         {
             zombie.SetActive(false);
             int type = GetZombieTypeFromObject(zombie);
-            RegisterKill(zombie, type); // Return to pool
+            RegisterKill(zombie, type);
         }
+
+
+        currentRound++;
+        currentKillCount = 0;
+        zombiesToKillThisRound += IncreaseKillsAMount;
+        AdjustSpawnChances();
+
+
+
+        
 
         UpdateKillText();
     }
