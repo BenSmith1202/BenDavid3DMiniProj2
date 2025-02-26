@@ -132,6 +132,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2775847211932464739, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: ZombCode
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5111861472061045402, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_Name
       value: ShieldZombie Variant

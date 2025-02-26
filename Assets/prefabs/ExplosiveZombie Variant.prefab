@@ -9,6 +9,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2775847211932464739, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: ZombCode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2775847211932464739, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: deathParts
       value: 
       objectReference: {fileID: 5165592974621314438, guid: 3c9492e80895ec142a78d11bbb848eac, type: 3}

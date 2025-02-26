@@ -10545,7 +10545,7 @@ GameObject:
   - component: {fileID: 1813233824}
   m_Layer: 0
   m_Name: WaveManager
-  m_TagString: Untagged
+  m_TagString: WMan
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10568,21 +10568,21 @@ MonoBehaviour:
   - {fileID: 1832203710}
   - {fileID: 2039050525}
   zombiePrefabs:
-  - {fileID: 9064229387291270159, guid: 5336521e23bfc1b438d10e4215061fed, type: 3}
-  - {fileID: 3924370078432204867, guid: 1d2d950a748826f40836dbe7e08c2c16, type: 3}
+  - {fileID: 5111861472061045402, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+  - {fileID: 8034343482242045554, guid: 5f45b9eca158d244ca475b50ca4124cd, type: 3}
   - {fileID: 2945253393169394633, guid: 825e8b3a0c8340149be3f2e52271693a, type: 3}
-  - {fileID: 2911919619720192077, guid: c5cf2580cfc5a00419275b651b8b087a, type: 3}
+  - {fileID: 2591369806064535634, guid: f834e3714c7f98346b79d7501b9b0480, type: 3}
   zombieSpawnChances:
   - 1
   - 0
   - 0
   - 0
-  spawnRate: 5
-  spawnBatchSize: 3
+  spawnRate: 5.17
+  spawnBatchSize: 4
   currentRound: 1
   zombiesToKillThisRound: 10
   killsText: {fileID: 486067301}
-  IncreaseKillsAMount: 25
+  IncreaseKillsAMount: 15
   SpawnChanceChangeAmount: 0.04
 --- !u!4 &1813233825
 Transform:
