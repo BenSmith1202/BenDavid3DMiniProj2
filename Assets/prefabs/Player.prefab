@@ -9933,7 +9933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a3123bbb70bcc4f9dc8696058a15dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 5
+  baseSpeed: 4
   groundDrag: 3
   airDrag: 0.5
   airMultiplier: 1
@@ -9942,12 +9942,12 @@ MonoBehaviour:
   jumpForce: 5
   jumpDelay: 0.1
   staminaBar: {fileID: 0}
-  sprintSpeed: 8
+  sprintSpeed: 7
   sprinting: 0
   maxStamina: 100
   stamina: 100
-  sprintCost: 20
-  staminaRegen: 5
+  sprintCost: 28
+  staminaRegen: 12
   healthBar: {fileID: 0}
   maxHealth: 100
   health: 100
@@ -9965,12 +9965,13 @@ MonoBehaviour:
   bulletTrailPrefab: {fileID: 3193775022546396649, guid: b8e8ff1ef3aedae47aa9149affd814bc, type: 3}
   clipText: {fileID: 0}
   ammoStockText: {fileID: 0}
-  shootCooldownTime: 0.5
+  reloadRing: {fileID: 0}
+  shootCooldownTime: 0.3
   shootCooldown: 0
   clipSize: 12
   clip: 12
-  ammoStock: 60
-  reloadTime: 1
+  ammoStock: 120
+  reloadTime: 0.75
   isReloading: 0
 --- !u!114 &3140368299428776644
 MonoBehaviour:
@@ -10049,6 +10050,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: de8ebb1f-904d-49a4-a7d0-96493b27b0bb
     m_ActionName: mainMap/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7995aed0-9c5e-4cfd-99d7-a70694a43591
+    m_ActionName: mainMap/Shoot[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 62d227ff-30b1-42d4-82dc-ee411c61638f
+    m_ActionName: mainMap/Reload[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: mainMap
