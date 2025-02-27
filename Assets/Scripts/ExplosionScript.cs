@@ -10,10 +10,15 @@ public class ExplosionScript : MonoBehaviour
     public float zombieDamage = 3f;
     public float playerDamage = 20f;
     public ParticleSystem explosionEffectPrefab;
+    AudioSource audioSource;
+    public AudioClip explosionEffectSound;
 
     private bool hasExploded = false;
 
-
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     public void ExplodeAfterDelay(float delay)
     {
         if (hasExploded) return; // Prevent multiple explosions
@@ -36,7 +41,7 @@ public class ExplosionScript : MonoBehaviour
         Destroy(explosionPart, 0.8f);
 
         //TODO: Sound effect
-
+        audioSource.PlayOneShot(explosionEffectSound);
 
         // loop through all colliders that get hit by this sphere
         Collider[] affected = Physics.OverlapSphere(transform.position, radius);

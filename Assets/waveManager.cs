@@ -149,7 +149,7 @@ public class WaveManager : MonoBehaviour
 
     public void RegisterKill(GameObject zombie, int type)
     {
-        print("AHHH");
+        
         switch (type)
         {
             case 0: currentKillCount++; break;
@@ -253,9 +253,9 @@ public class WaveManager : MonoBehaviour
     {
         float roll = Random.Range(0f, 1f); // Random number between 0 and 1
 
-        if (roll > 1 - ((currentRound - 4) * SpawnChanceChangeAmount / 2.4))
+        if (roll > 1 - ((currentRound - 4) * SpawnChanceChangeAmount / 1.8))
             return shieldPool.Dequeue();
-        else if (roll > 1 - ((currentRound - 3) * SpawnChanceChangeAmount / 1.3))
+        else if (roll > 1 - ((currentRound - 3) * SpawnChanceChangeAmount / 1.2))
             return bigPool.Dequeue();
         else if (roll > 1 - ((currentRound - 2) * SpawnChanceChangeAmount))
             return explosivePool.Dequeue();

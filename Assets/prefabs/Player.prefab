@@ -9963,6 +9963,8 @@ MonoBehaviour:
   orientation: {fileID: 2534949192398881751}
   cam: {fileID: 0}
   gunshot: {fileID: 8300000, guid: 593379f9854295a45a84ddabc15f1486, type: 3}
+  hurtSound: {fileID: 8300000, guid: 75b3d4f9eec6a4944ad87d531e85199b, type: 3}
+  reloadSound: {fileID: 8300000, guid: 972b4380f45107547939d111c6e2cde1, type: 3}
   muzzleFlash: {fileID: 3849674821743195789}
   muzzleSmoke: {fileID: 383509306315554012}
   bulletTrailPrefab: {fileID: 3193775022546396649, guid: b8e8ff1ef3aedae47aa9149affd814bc, type: 3}
@@ -9973,7 +9975,7 @@ MonoBehaviour:
   shootCooldown: 0
   clipSize: 20
   clip: 20
-  ammoStock: 120
+  ammoStock: 99999
   reloadTime: 1
   isReloading: 0
 --- !u!114 &3140368299428776644
@@ -10099,7 +10101,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.352
+  m_Volume: 0.464
   m_Pitch: 1
   Loop: 0
   Mute: 0

@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerControllerScript : MonoBehaviour
@@ -68,6 +69,8 @@ public class PlayerControllerScript : MonoBehaviour
 
     [Header("Visuals")]
     public AudioClip gunshot;
+    public AudioClip hurtSound;
+    public AudioClip reloadSound;
     Animator animator;
     public ParticleSystem muzzleFlash;
     public ParticleSystem muzzleSmoke;
@@ -94,6 +97,8 @@ public class PlayerControllerScript : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         runSpeed = baseSpeed;
         healthBarScript = healthBar.GetComponent<UIBarScript>();
         stamBarScript = staminaBar.GetComponent<UIBarScript>();
@@ -109,6 +114,11 @@ public class PlayerControllerScript : MonoBehaviour
 
     private void Update()
     {
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
         StateHandler();
         moveDirection = orientation.right * moveInput.x + orientation.forward * moveInput.y;
         if (iframes > 0)
@@ -128,7 +138,7 @@ public class PlayerControllerScript : MonoBehaviour
         {
             regenerating = true;
         }
-        if (regenerating && health < maxHealth)
+        if (regenerating && health <= maxHealth)
         {
             ChangeHealth(regenRate * Time.deltaTime);
         }
@@ -358,7 +368,7 @@ public class PlayerControllerScript : MonoBehaviour
 
         muzzleFlash.Play();
         muzzleSmoke.Play();
-        audioSource.PlayOneShot(gunshot);
+        audioSource.PlayOneShot(gunshot, 0.3f);
         Vector3 bulletVector = target - muzzleFlash.transform.position;
         bulletVector = RemovePositiveParallelComponent(bulletVector, -transform.forward);
         target = muzzleFlash.transform.position + bulletVector;
@@ -386,6 +396,7 @@ public class PlayerControllerScript : MonoBehaviour
 
     IEnumerator ReloadCoroutine(float duration)
     {
+        audioSource.PlayOneShot(reloadSound);
         if (clip < clipSize)
         {
             isReloading = true;
@@ -418,10 +429,15 @@ public class PlayerControllerScript : MonoBehaviour
     {
         if (!invulnerable)
         {
+            audioSource.PlayOneShot(hurtSound);
             //particles and sound maybe;
             ChangeHealth(-damage);
             healingDelayLeft = healingDelay;
             iframesLeft = iframes;
+            if (health < 0)
+            {
+                SceneManager.LoadScene(3);
+            }
         }
         
     }

@@ -11,9 +11,12 @@ public class ZombieScript : MonoBehaviour
     Rigidbody rb;
     public bool dead;
     public ParticleSystem deathParts;
+    AudioSource audioSource;
+    public AudioClip deathSound;
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         myCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         monsterLogicScript = GetComponent<MonsterLogicScript>();
@@ -45,7 +48,7 @@ public class ZombieScript : MonoBehaviour
     {
 
         dead = true;
-
+        audioSource.PlayOneShot(deathSound);
         GameObject.FindWithTag("WMan").GetComponent<WaveManager>().RegisterKill(gameObject, zombCode);
 
 

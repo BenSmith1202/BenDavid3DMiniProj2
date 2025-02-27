@@ -8,6 +8,12 @@ public class ButtonScript : MonoBehaviour
 
     public bool isStartButton; //else end button
     // Start is called before the first frame update
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
     public void OnPress()
     {
         if (isStartButton)

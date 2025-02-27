@@ -133,8 +133,9 @@ GameObject:
   - component: {fileID: 242409654}
   - component: {fileID: 242409656}
   - component: {fileID: 242409655}
+  - component: {fileID: 242409657}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Rounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: On Round 1
+  m_text: You Survived 100 Rounds!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cc934433e38c67c49bb8e933c2033f4a, type: 2}
   m_sharedMaterial: {fileID: -4167988142560415922, guid: cc934433e38c67c49bb8e933c2033f4a, type: 2}
@@ -256,6 +257,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 242409653}
   m_CullTransparentMesh: 1
+--- !u!114 &242409657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242409653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918240c3341dd7f44bf2d14ee2d2aed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &401371942
 GameObject:
   m_ObjectHideFlags: 0
