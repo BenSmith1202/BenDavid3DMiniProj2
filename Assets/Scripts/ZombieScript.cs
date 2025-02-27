@@ -45,7 +45,10 @@ public class ZombieScript : MonoBehaviour
     {
 
         dead = true;
-        
+
+        GameObject.FindWithTag("WMan").GetComponent<WaveManager>().RegisterKill(gameObject, zombCode);
+
+
 
         ExplosionScript potentialExplosion = GetComponent<ExplosionScript>();
         if (potentialExplosion != null)
@@ -68,7 +71,6 @@ public class ZombieScript : MonoBehaviour
             fadeTime -= 0.02f;
         }
 
-        GameObject.FindWithTag("WMan").GetComponent<WaveManager>().RegisterKill(gameObject, zombCode);
 
     }
 

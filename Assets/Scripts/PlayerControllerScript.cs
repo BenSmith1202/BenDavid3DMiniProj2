@@ -366,7 +366,6 @@ public class PlayerControllerScript : MonoBehaviour
         bTrail.GetComponent<BulletTrailScript>().StartTrail(bTrail.transform.position, target);
         shootCooldown = shootCooldownTime;
         ChangeClipAmmo(-1);
-        Debug.Log("Clip: " + clip);
         if (clip <= 0)
         {
             StartCoroutine(ReloadCoroutine(reloadTime));
@@ -392,7 +391,6 @@ public class PlayerControllerScript : MonoBehaviour
             isReloading = true;
             if (ammoStock == 0)
             {
-                Debug.Log("Out of Ammo");
             }
             else
             {
@@ -407,9 +405,7 @@ public class PlayerControllerScript : MonoBehaviour
                 int amountToLoad = Mathf.Min(clipSize - clip, ammoStock);
                 ChangeClipAmmo(amountToLoad);
                 ChangeAmmoStock(-amountToLoad);
-                Debug.Log("Loaded " + amountToLoad + " rounds.");
-                Debug.Log("Clip: " + clip);
-                Debug.Log("Ammo Supply: " + ammoStock);
+                
 
             }
             isReloading = false;

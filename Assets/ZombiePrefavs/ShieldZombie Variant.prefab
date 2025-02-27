@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: ZombCode
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2775847211932464739, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: zombCode
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5111861472061045402, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_Name
       value: ShieldZombie Variant
@@ -87,8 +91,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 30
-  maxSpeed: 6
+  maxSpeed: 3
   calculationFrequency: 0.5
   shield: {fileID: 0}
   shieldPrefab: {fileID: 4774634064663269488, guid: 346f6732b82f7d340a48422fdbd06336, type: 3}
-  shieldRechargeTime: 10
+  shieldRechargeTime: 5
