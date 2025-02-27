@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class waveManager : MonoBehaviour
+public class WaveManager : MonoBehaviour
 {
     [Header("Spawning Settings")]
     public Transform[] spawnPoints; // Spawn locations
     public GameObject[] zombiePrefabs; // 0 = Normal, 1 = Explosive, 2 = Big, 3 = Shield
     public float[] zombieSpawnChances = { 1f, 0f, 0f, 0f }; // Probability of each zombie type (Normal starts at 1)
+    List<GameObject> allZombies;
+    public Vector3 hordeCentroid;
 
     public float spawnRate = 5f; // Time between spawns
     public int spawnBatchSize = 3; // Zombies per spawn wave
@@ -29,9 +31,22 @@ public class waveManager : MonoBehaviour
 
     void Start()
     {
+        allZombies = new List<GameObject>();
         InitializeObjectPools();
         StartCoroutine(SpawnZombiesRoutine());
         UpdateKillText();
+    }
+
+    private void Update()
+    {
+        float recalculationTimer = 0;
+        
+        recalculationTimer -= Time.deltaTime;
+        if (recalculationTimer < 0)
+        {
+            recalculationTimer = 2;
+            hordeCentroid = GetHordeCentroid();
+        }
     }
 
     // *** Updated: Separated object pools for each zombie type ***
@@ -87,6 +102,7 @@ public class waveManager : MonoBehaviour
             GameObject zombie = GetRandomZombie();
             if (zombie != null)
             {
+                allZombies.Add(zombie);
                 zombie.transform.position = spawnPoint.position;
                 zombie.transform.rotation = Quaternion.identity;
                 zombie.SetActive(true);
@@ -120,7 +136,7 @@ public class waveManager : MonoBehaviour
     public void RegisterKill(GameObject zombie, int type)
     {
         currentKillCount++;
-
+        allZombies.Remove(zombie);
         // *** Updated: Return zombie to correct pool based on type ***
         zombie.SetActive(false);
         switch (type)
@@ -145,15 +161,18 @@ public class waveManager : MonoBehaviour
 
     void StartNewRound()
     {
+        // Create a temporary copy of the zombie list so we dont clear during iteration
+        List<GameObject> zombiesToRemove = new List<GameObject>(allZombies);
 
-        // Disable all zombies still active
-        GameObject[] allZombies = GameObject.FindGameObjectsWithTag("Zombie");
-        foreach (GameObject zombie in allZombies)
+        foreach (GameObject zombie in zombiesToRemove)
         {
             zombie.SetActive(false);
             int type = GetZombieTypeFromObject(zombie);
             RegisterKill(zombie, type);
         }
+        allZombies.Clear();
+
+ 
 
 
         currentRound++;
@@ -168,7 +187,15 @@ public class waveManager : MonoBehaviour
         UpdateKillText();
     }
 
-
+    public Vector3 GetHordeCentroid()
+    {
+        Vector3 vectorSum = Vector3.zero;
+        foreach(GameObject zombie in allZombies)
+        {
+            vectorSum += zombie.transform.position;
+        }
+        return vectorSum / allZombies.Count;
+    }
 
 
     public float SpawnChanceChangeAmount;
@@ -203,15 +230,24 @@ public class waveManager : MonoBehaviour
             killsText.text = $"Kills: {currentKillCount}/{zombiesToKillThisRound}";
     }
 
-    // *** Updated: Determines zombie type based on prefab reference ***
+    //// *** Updated: Determines zombie type based on prefab reference ***
+    //int GetZombieTypeFromObject(GameObject zombie)
+    //{
+    //    if (zombiePrefabs[1] == zombie) return 1; // Explosive
+    //    if (zombiePrefabs[2] == zombie) return 2; // Big
+    //    if (zombiePrefabs[3] == zombie) return 3; // Shield
+    //    return 0; // Normal
+    //}
+
     int GetZombieTypeFromObject(GameObject zombie)
     {
-        if (zombiePrefabs[1] == zombie) return 1; // Explosive
-        if (zombiePrefabs[2] == zombie) return 2; // Big
-        if (zombiePrefabs[3] == zombie) return 3; // Shield
-        return 0; // Normal
+        ZombieScript zombieScript = zombie.GetComponent<ZombieScript>();
+        if (zombieScript != null)
+        {
+            return zombieScript.zombCode;
+        }
+        return 0; // Default to normal type
     }
-
 
 
 

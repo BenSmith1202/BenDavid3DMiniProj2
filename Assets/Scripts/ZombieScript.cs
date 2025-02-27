@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ZombieScript : MonoBehaviour
 {
-    public float speed;
+    public float contactDamage;
     MonsterLogicScript monsterLogicScript;
-    Animator animator;
+    public Animator animator;
     CapsuleCollider myCollider;
     Rigidbody rb;
     public bool dead;
@@ -21,7 +21,7 @@ public class ZombieScript : MonoBehaviour
     }
 
 
-    public int ZombCode;
+    public int zombCode;
 
     // Update is called once per frame
     void Update()
@@ -29,17 +29,47 @@ public class ZombieScript : MonoBehaviour
         if (!dead && monsterLogicScript.health < 0)
         {
 
-            GameObject.FindWithTag("WMan").GetComponent<waveManager>().RegisterKill(gameObject, ZombCode);
-
-
-
-            dead = true;
-            animator.SetBool("dead", true);
-            myCollider.enabled = false;
-            rb.useGravity = false;
-            GameObject deathEffect = Instantiate(deathParts, transform.position, monsterLogicScript.billboard.transform.rotation).gameObject;
-            Destroy(deathEffect, 2);
+            StartCoroutine(DeathCoroutine());
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<PlayerControllerScript>() != null)
+        {
+            collision.gameObject.GetComponent<PlayerControllerScript>().TakeDamage(contactDamage);
+        }
+    }
+
+    IEnumerator DeathCoroutine()
+    {
+
+        dead = true;
+        
+
+        ExplosionScript potentialExplosion = GetComponent<ExplosionScript>();
+        if (potentialExplosion != null)
+        {
+            potentialExplosion.Explode();
+        }
+
+
+        animator.SetBool("dead", true);
+        myCollider.enabled = false;
+        rb.useGravity = false;
+        GameObject deathEffect = Instantiate(deathParts, transform.position, monsterLogicScript.billboard.transform.rotation).gameObject;
+        Destroy(deathEffect, 2);
+
+        float fadeTime = 2;
+        while (fadeTime > 0)
+        {
+            yield return new WaitForSeconds(0.02f);
+            monsterLogicScript.bbsp.color = new Color(monsterLogicScript.bbsp.color.r, monsterLogicScript.bbsp.color.g, monsterLogicScript.bbsp.color.b, fadeTime / 2f);
+            fadeTime -= 0.02f;
+        }
+
+        GameObject.FindWithTag("WMan").GetComponent<WaveManager>().RegisterKill(gameObject, zombCode);
+
     }
 
 }

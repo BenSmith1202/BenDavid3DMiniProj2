@@ -9795,7 +9795,7 @@ GameObject:
   - component: {fileID: 5750870916364366810}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9933,7 +9933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a3123bbb70bcc4f9dc8696058a15dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 4
+  baseSpeed: 6.5
   groundDrag: 3
   airDrag: 0.5
   airMultiplier: 1
@@ -9942,7 +9942,7 @@ MonoBehaviour:
   jumpForce: 5
   jumpDelay: 0.1
   staminaBar: {fileID: 0}
-  sprintSpeed: 7
+  sprintSpeed: 10
   sprinting: 0
   maxStamina: 100
   stamina: 100
@@ -9951,6 +9951,9 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   maxHealth: 100
   health: 100
+  iframes: 0.3
+  healingDelay: 4
+  regenRate: 2.5
   maxSlopeAngle: 40
   slopeCling: 5
   playerHeight: 2.18
@@ -9966,12 +9969,12 @@ MonoBehaviour:
   clipText: {fileID: 0}
   ammoStockText: {fileID: 0}
   reloadRing: {fileID: 0}
-  shootCooldownTime: 0.3
+  shootCooldownTime: 0.22
   shootCooldown: 0
-  clipSize: 12
-  clip: 12
+  clipSize: 20
+  clip: 20
   ammoStock: 120
-  reloadTime: 0.75
+  reloadTime: 1
   isReloading: 0
 --- !u!114 &3140368299428776644
 MonoBehaviour:

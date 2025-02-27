@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &2994685087686536424
+--- !u!1001 &509593637413358094
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,35 +10,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -515534557163121862, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: maxSpeed
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2775847211932464739, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
-      propertyPath: ZombCode
-      value: 1
+      propertyPath: contactDamage
+      value: 30
       objectReference: {fileID: 0}
-    - target: {fileID: 2775847211932464739, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
-      propertyPath: deathParts
-      value: 
-      objectReference: {fileID: 5165592974621314438, guid: 3c9492e80895ec142a78d11bbb848eac, type: 3}
     - target: {fileID: 5111861472061045402, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_Name
-      value: ExplosiveZombie Variant
+      value: Big Zombie Variant
       objectReference: {fileID: 0}
     - target: {fileID: 6570867312492860662, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2045340606, guid: fe0c6f68a0ac67b47b4d78de69608ad0, type: 3}
+      objectReference: {fileID: 681794523, guid: f2143da34e4f2134f86b6cda700ce66b, type: 3}
+    - target: {fileID: 7110841752239716114, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7110841752239716114, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7110841752239716114, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7110841752239716114, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.362761
+      value: 0.50669265
       objectReference: {fileID: 0}
     - target: {fileID: 7110841752239716114, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7
+      value: 2.67
       objectReference: {fileID: 0}
     - target: {fileID: 7110841752239716114, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.1966166
+      value: 3.3795278
       objectReference: {fileID: 0}
     - target: {fileID: 7110841752239716114, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_LocalRotation.w
@@ -68,39 +76,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7110841752239716114, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7833623152700234342, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: health
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7833623152700234342, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
+      propertyPath: maxHealth
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 7969626947947709926, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 20c2e0984f5e63a459cae62bfa6da06f, type: 2}
+      objectReference: {fileID: 9100000, guid: 76867e4d2a5672844a67c0a73d3bbff4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5111861472061045402, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5599473284331776361}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
---- !u!1 &8034343482242045554 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5111861472061045402, guid: a3ed440bce2969f4e8268956b97ab3df, type: 3}
-  m_PrefabInstance: {fileID: 2994685087686536424}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5599473284331776361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8034343482242045554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f3deb7ce7b661549b923248f0286469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  radius: 6
-  baseForce: 10
-  forceScaling: 5
-  forceOriginDepth: 1
-  zombieDamage: 3
-  playerDamage: 30
-  explosionEffectPrefab: {fileID: 8985140698364711505, guid: 58f39e38107331c42bba6e3cf296299e, type: 3}

@@ -1,12 +1,8 @@
 using System.Collections;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class PlayerControllerScript : MonoBehaviour
 {
@@ -39,6 +35,13 @@ public class PlayerControllerScript : MonoBehaviour
     UIBarScript healthBarScript;
     public float maxHealth;
     public float health;
+    public float iframes;
+    float iframesLeft = 0;
+    public float healingDelay;
+    float healingDelayLeft;
+    bool invulnerable;
+    bool regenerating;
+    public float regenRate;
 
     [Header("Slope Movement")]
     public float maxSlopeAngle;
@@ -60,6 +63,8 @@ public class PlayerControllerScript : MonoBehaviour
     public GameObject cam;
     CameraScript camScript;
     AudioSource audioSource;
+    SpriteRenderer sp;
+
 
     [Header("Visuals")]
     public AudioClip gunshot;
@@ -97,6 +102,7 @@ public class PlayerControllerScript : MonoBehaviour
         _rbody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         camScript = cam.GetComponent<CameraScript>();
+        sp = GetComponent<SpriteRenderer>();
         reloadRing.fillAmount = 0;
 
     }
@@ -105,6 +111,27 @@ public class PlayerControllerScript : MonoBehaviour
     {
         StateHandler();
         moveDirection = orientation.right * moveInput.x + orientation.forward * moveInput.y;
+        if (iframes > 0)
+        {
+            invulnerable = true;
+            iframes -= Time.deltaTime;
+        } else
+        {
+            invulnerable = false;
+        }
+
+        if (healingDelay > 0)
+        {
+            regenerating = false;
+            healingDelay -= Time.deltaTime;
+        } else
+        {
+            regenerating = true;
+        }
+        if (regenerating && health < maxHealth)
+        {
+            ChangeHealth(regenRate * Time.deltaTime);
+        }
     }
 
     void FixedUpdate()
@@ -393,7 +420,23 @@ public class PlayerControllerScript : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        healthBarScript.SetSliderValue(health);
+        if (!invulnerable)
+        {
+            //particles and sound maybe;
+            ChangeHealth(-damage);
+            healingDelayLeft = healingDelay;
+            iframesLeft = iframes;
+        }
+        
     }
+    public void ChangeHealth(float deltaHealth)
+    {
+        health += deltaHealth;
+        healthBarScript.SetSliderValue(health);
+        if (health < 0.6 * maxHealth)
+        {
+            sp.color = new Color(1, health / (0.6f * maxHealth), health / (0.6f * maxHealth));
+        }
+    }
+
 }
