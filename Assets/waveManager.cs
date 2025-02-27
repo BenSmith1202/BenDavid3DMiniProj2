@@ -28,9 +28,13 @@ public class WaveManager : MonoBehaviour
 
     [Header("UI Elements")]
     public TextMeshProUGUI killsText; // UI Text "Kills: X/X"
+    public TextMeshProUGUI RoundText; // UI Text "Kills: X/X"
+
 
     void Start()
     {
+        PlayerPrefs.SetInt("rounds", currentRound);
+
         allZombies = new List<GameObject>();
         InitializeObjectPools();
         StartCoroutine(SpawnZombiesRoutine());
@@ -39,6 +43,32 @@ public class WaveManager : MonoBehaviour
 
     private void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            float roll = Random.Range(0f, 1f); // Random number between 0 and 1
+
+            print(roll);
+            print(1 - ((currentRound - 5) * SpawnChanceChangeAmount));
+            print(1 - ((currentRound - 3) * SpawnChanceChangeAmount));
+            print(1 - ((currentRound - 1) * SpawnChanceChangeAmount));
+
+
+            if (roll > 1 - ((currentRound - 4) * SpawnChanceChangeAmount))
+                print("shielder");
+            else if (roll > 1 - ((currentRound - 3) * SpawnChanceChangeAmount))
+                print("big");
+            else if (roll > 1 - ((currentRound - 2) * SpawnChanceChangeAmount))
+                print("explode");
+        }
+        
+
         float recalculationTimer = 0;
         
         recalculationTimer -= Time.deltaTime;
@@ -114,38 +144,23 @@ public class WaveManager : MonoBehaviour
 
 
 
-    GameObject GetRandomZombie()
-    {
-        float roll = Random.Range(0f, 1f); // Random number between 0 and 1
-
-        if (roll < zombieSpawnChances[0] && normalPool.Count > 0)
-            return normalPool.Dequeue();
-        else if (roll < zombieSpawnChances[0] + zombieSpawnChances[1] && explosivePool.Count > 0)
-            return explosivePool.Dequeue();
-        else if (roll < zombieSpawnChances[0] + zombieSpawnChances[1] + zombieSpawnChances[2] && bigPool.Count > 0)
-            return bigPool.Dequeue();
-        else if (shieldPool.Count > 0)
-            return shieldPool.Dequeue();
-
-        return null; // Failsafe
-    }
-
 
 
 
     public void RegisterKill(GameObject zombie, int type)
     {
-        currentKillCount++;
-        allZombies.Remove(zombie);
-        // *** Updated: Return zombie to correct pool based on type ***
-        zombie.SetActive(false);
+        print("AHHH");
         switch (type)
         {
-            case 0: normalPool.Enqueue(zombie); break;
-            case 1: explosivePool.Enqueue(zombie); break;
-            case 2: bigPool.Enqueue(zombie); break;
-            case 3: shieldPool.Enqueue(zombie); break;
+            case 0: currentKillCount++; break;
+            case 1: currentKillCount++ ; break;
+            case 2: currentKillCount += 5; break;
+            case 3: currentKillCount += 3; break;
         }
+        allZombies.Remove(zombie);
+
+        //call zombie dies properly
+        StartCoroutine(ZombieDies(zombie, type));
 
         UpdateKillText();
 
@@ -155,17 +170,39 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    public IEnumerator ZombieDies(GameObject zombie, int type)
+    {
+        yield return new WaitForSeconds(2f);
+
+        zombie.SetActive(false);
+        switch (type)
+        {
+            case 0: normalPool.Enqueue(zombie); break;
+            case 1: explosivePool.Enqueue(zombie); break;
+            case 2: bigPool.Enqueue(zombie); break;
+            case 3: shieldPool.Enqueue(zombie); break;
+        }
+
+
+    }
+
 
     public int IncreaseKillsAMount;
 
 
     void StartNewRound()
     {
+
+        currentKillCount = 0;
+
+
         // Create a temporary copy of the zombie list so we dont clear during iteration
         List<GameObject> zombiesToRemove = new List<GameObject>(allZombies);
 
         foreach (GameObject zombie in zombiesToRemove)
         {
+            currentKillCount = 0;
+
             zombie.SetActive(false);
             int type = GetZombieTypeFromObject(zombie);
             RegisterKill(zombie, type);
@@ -176,16 +213,29 @@ public class WaveManager : MonoBehaviour
 
 
         currentRound++;
+        PlayerPrefs.SetInt("rounds", currentRound);
         currentKillCount = 0;
         zombiesToKillThisRound += IncreaseKillsAMount;
-        AdjustSpawnChances();
 
 
 
+       // AdjustSpawnChances();
+        AdjustSpawnRate();
         
 
         UpdateKillText();
+        UpdateRoundText();
     }
+
+
+    
+    public void AdjustSpawnRate()
+    {
+        spawnBatchSize += 1;
+        spawnRate -= 0.3f;
+    }
+
+
 
     public Vector3 GetHordeCentroid()
     {
@@ -198,26 +248,47 @@ public class WaveManager : MonoBehaviour
     }
 
 
+
+    GameObject GetRandomZombie()
+    {
+        float roll = Random.Range(0f, 1f); // Random number between 0 and 1
+
+        if (roll > 1 - ((currentRound - 4) * SpawnChanceChangeAmount / 2.4))
+            return shieldPool.Dequeue();
+        else if (roll > 1 - ((currentRound - 3) * SpawnChanceChangeAmount / 1.3))
+            return bigPool.Dequeue();
+        else if (roll > 1 - ((currentRound - 2) * SpawnChanceChangeAmount))
+            return explosivePool.Dequeue();
+        else if (normalPool.Count > 0)
+            return normalPool.Dequeue();
+
+        return null; // Failsafe
+    }
+
+
     public float SpawnChanceChangeAmount;
 
-    void AdjustSpawnChances()
-    {
-        if (currentRound == 2)
-        {
-            zombieSpawnChances[1] = SpawnChanceChangeAmount; // Explosive: 5%
-            zombieSpawnChances[0] -= SpawnChanceChangeAmount; // Reduce normal chance
-        }
-        if (currentRound == 3)
-        {
-            zombieSpawnChances[2] = SpawnChanceChangeAmount; // Big: 5%
-            zombieSpawnChances[0] -= SpawnChanceChangeAmount;
-        }
-        if (currentRound == 4)
-        {
-            zombieSpawnChances[3] = SpawnChanceChangeAmount; // Shield: 5%
-            zombieSpawnChances[0] -= SpawnChanceChangeAmount;
-        }
-    }
+    //void AdjustSpawnChances()
+    //{
+    //    if (currentRound == 2)
+    //    {
+    //        zombieSpawnChances[1] = 1; // Explosive: 5%
+    //        zombieSpawnChances[0] -= SpawnChanceChangeAmount; // Reduce normal chance
+    //    }
+    //    if (currentRound == 3)
+    //    {
+    //        zombieSpawnChances[2] = 1; // Big: 5%
+    //        zombieSpawnChances[1] -= SpawnChanceChangeAmount; // Explosive: 5%
+    //        zombieSpawnChances[0] -= SpawnChanceChangeAmount;
+    //    }
+    //    if (currentRound == 4)
+    //    {
+    //        zombieSpawnChances[3] = 1; // Big: 5%
+    //        zombieSpawnChances[2] -= SpawnChanceChangeAmount;
+    //        zombieSpawnChances[1] -= SpawnChanceChangeAmount; // Shield: 5%
+    //        zombieSpawnChances[0] -= SpawnChanceChangeAmount;
+    //    }
+    //}
 
 
 
@@ -229,6 +300,14 @@ public class WaveManager : MonoBehaviour
         if (killsText != null)
             killsText.text = $"Kills: {currentKillCount}/{zombiesToKillThisRound}";
     }
+
+
+    void UpdateRoundText()
+    {
+        if (RoundText != null)
+            RoundText.text = $"Round: {currentRound}";
+    }
+
 
     //// *** Updated: Determines zombie type based on prefab reference ***
     //int GetZombieTypeFromObject(GameObject zombie)

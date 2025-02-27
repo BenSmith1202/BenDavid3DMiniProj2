@@ -118,9 +118,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb10424a0819e642a264d758ea1d154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 15
-  maxhealth: 15
+  health: 30
+  maxhealth: 30
   minSize: 1
-  maxSize: 15
+  maxSize: 20
   breakParticles: {fileID: 4662079990296923686, guid: 939038b6ccfbd6049b17b616ea758ab9, type: 3}
   hitParticles: {fileID: 8740878706508616840, guid: cc04ff66eb3b9284ea16e22b2baf0760, type: 3}
